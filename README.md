@@ -14,7 +14,7 @@ composer require pandaxxw/panda-dto
 
 ```php
 use App\Models\Author;
-use Spatie\DataTransferObject\DataTransferObject;
+use Pandaxxw\Dto\Dto;
 
 class PostData extends Dto
 {
@@ -81,8 +81,8 @@ class PostData extends Dto
 ### 集合
 
 ```php
-
-class PostCollection extends \Pandaxxw\Dto\DtoCollection
+use Pandaxxw\Dto\DtoCollection;
+class PostCollection extends DtoCollection
 {
     public function current(): PostData
     {
@@ -106,9 +106,9 @@ $postCollection[0]->
 
 ```php
 use App\DataTransferObjects\PostData;
-use Spatie\DataTransferObject\DataTransferObjectCollection;
+use Pandaxxw\Dto\DtoCollection;
 
-class PostCollection extends \Pandaxxw\Dto\DtoCollection
+class PostCollection extends DtoCollection
 {
     public static function create(array $data): PostCollection
     {
@@ -122,6 +122,7 @@ class PostCollection extends \Pandaxxw\Dto\DtoCollection
 如果您有嵌套的 DTO 字段，则传递到父 DTO 的数据将自动进行转换。
 
 ```php
+use Pandaxxw\Dto\Dto;
 
 class PostData extends Dto
 {
@@ -138,9 +139,6 @@ $postData = new PostData([
     ],
 ]);
 ```
-
-**Attention**: Remember, for nested type casting to work, your Docblock definition needs to be a Fully Qualified Class
-Name (`\App\DataTransferObjects\TagData[]` instead of `TagData[]` and a use statement at the top).
 
 ### 不可改变的Dto
 
@@ -180,25 +178,22 @@ $postData
     ->toArray();
 ```
 
-需要注意的是，except和only是不可变的，它们不会改变原始数据传输对象。
+注意except和only是不可变的，它们不会改变原始数据传输对象。
 
 ### 异常处理
 
-除了属性类型验证之外，您还可以确定整个数据传输对象始终有效。在构造数据传输对象时，我们将验证是否设置了所有必需的（不可为空）属性。如果没有，Spatie\DataTransferObject\DataTransferObjectError将会抛出
+除了属性类型验证之外，您还可以确定整个数据传输对象始终有效。在构造数据传输对象时，我们将验证是否设置了所有必需的（不可为空）属性。如果没有，DtoError将会抛出
 a 。
 
 同样，如果您尝试设置未定义的属性，Dto.
 
 ### 灵活的数据传输对象
 
-有时您可能希望能够使用数组的子集实例化 DTO。一个很好的例子是大型 API 响应，其中仅使用少量字段。通常，如果您尝试实例化具有多余属性的标准
-DTO，DtoError则会抛出异常。
-
-您可以通过FlexibleDto避免异常。例如：
+FlexibleDto传输的属性可以为空,可以通过FlexibleDto避免异常。例如：
 
 ```php
-
-class PostData extends \Pandaxxw\Dto\FlexibleDto
+use Pandaxxw\Dto\FlexibleDto;
+class PostData extends FlexibleDto
 {
     public string $content;
 }
@@ -209,9 +204,9 @@ $dto = new PostData([
     'author' => [
         'id' => 1,
     ],
-    'content' => 'blah blah',
-    'created_at' => '2020-01-02',
+    'content' => 'panda',
+    'created_at' => '2023-01-02',
 ]);
 
-$dto->toArray(); // ['content' => 'blah blah']
+$dto->toArray(); // ['content' => 'panda']
 ```
