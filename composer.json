@@ -1,0 +1,37 @@
+{
+  "name": "pandaxxw/panda-dto",
+  "description": "php传输对象",
+  "type": "library",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Pandaxxw\\Dto\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "panda"
+    }
+  ],
+  "require": {
+    "php": "^7.4|^8.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.0"
+  },
+  "suggest": {
+    "phpstan/phpstan": "Take advantage of checkUninitializedProperties with \\Pandaxxw\\Dto\\PHPstan\\PropertiesAreAlwaysInitializedExtension"
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Pandaxxw\\Dto\\Tests\\": "tests"
+    }
+  },
+  "scripts": {
+    "test": "vendor/bin/phpunit",
+    "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+  },
+  "config": {
+    "sort-packages": true
+  }
+}
