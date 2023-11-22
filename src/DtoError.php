@@ -18,8 +18,8 @@ class DtoError extends TypeError
     public static function invalidTypes(array $invalidTypes): DtoError
     {
         $msg = count($invalidTypes) > 1
-            ? "The following invalid types were encountered:\n" . implode("\n", $invalidTypes) . "\n"
-            : "Invalid type: {$invalidTypes[0]}.";
+            ? "遇到以下无效类型:\n" . implode("\n", $invalidTypes) . "\n"
+            : "无效类型: {$invalidTypes[0]}.";
 
         throw new self($msg);
     }
