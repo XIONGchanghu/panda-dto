@@ -51,9 +51,9 @@ abstract class Dto
 
         foreach ($validators as $field => $validator) {
             if (
-                ! isset($parameters[$field])
-                && ! $validator->hasDefaultValue
-                && ! $validator->isNullable
+                !isset($parameters[$field])
+                && !$validator->hasDefaultValue
+                && !$validator->isNullable
             ) {
                 throw DtoError::uninitialized(
                     static::class,
@@ -65,7 +65,7 @@ abstract class Dto
 
             $value = $this->castValue($valueCaster, $validator, $value);
 
-            if (! $validator->isValidType($value)) {
+            if (!$validator->isValidType($value)) {
                 $invalidTypes[] = DtoError::invalidTypeMessage(
                     static::class,
                     $field,
@@ -85,7 +85,7 @@ abstract class Dto
             DtoError::invalidTypes($invalidTypes);
         }
 
-        if (! $this->ignoreMissing && count($parameters)) {
+        if (!$this->ignoreMissing && count($parameters)) {
             throw DtoError::unknownProperties(array_keys($parameters), static::class);
         }
     }
@@ -151,6 +151,19 @@ abstract class Dto
         return $array;
     }
 
+    public function toJson(): string
+    {
+        if (count($this->onlyKeys)) {
+            $array = Arr::only($this->all(), $this->onlyKeys);
+        } else {
+            $array = Arr::except($this->all(), $this->exceptKeys);
+        }
+
+        $array = $this->parseArray($array);
+
+        return json_encode($array);
+    }
+
     protected function parseArray(array $array): array
     {
         foreach ($array as $key => $value) {
@@ -163,7 +176,7 @@ abstract class Dto
                 continue;
             }
 
-            if (! is_array($value)) {
+            if (!is_array($value)) {
                 continue;
             }
 
